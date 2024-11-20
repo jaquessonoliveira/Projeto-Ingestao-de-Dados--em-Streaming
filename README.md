@@ -17,7 +17,7 @@
 
 ## 2\. Arquitetura do Sistema:
 
-![modulo_43-4.png](https://github.com/jaquessonoliveira/modulo38-ebac/blob/main/0015%20-%20Projeto%20final.png?raw=true)
+![modulo_43-4.png](https://github.com/jaquessonoliveira/Projeto-Ingestao-de-Dados--em-Streaming/blob/main/Arquitetura%20Engenharia%20de%20dados.png)
 
 **O projeto foi desenvolvido com os seguintes componentes:**
 
