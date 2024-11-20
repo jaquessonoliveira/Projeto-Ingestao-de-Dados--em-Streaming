@@ -1,0 +1,79 @@
+pythom Principais formatos para Big Data:
+- Parquet: Colunar - padrão do Spark
+- Avro: Linha
+- Apache Orc: Colunar - padrão do Hive
+
+
+Hive -> DataWarehouse que opera sobre o HDFS (DataWarehouse para o Hadoop).
+DataFrame -> É apagado quando a sessão do Pyspark é encerrada
+Tabela -> Objeto tabular persistente que reside em um banco de dados, e não se apaga ao encerrar a sessão.
+Obs.: Tabela e dataFrame são interoperaveis, ou seja, uma tabela pode ser transformada em um data frame a qualquer 
+momento, e vice e versa. Os dados de uma tabela podem ser consultados com comandos SQL através da biblioteca sql do
+spark.
+
+
+Comandos importantes: Spark SQL
+
+-- Criar sessão spark e importar biblioteca necessária -- 
+   from pyspark.sql import SparkSession
+   from pyspark.sql.types import *
+
+-- Habilitar Database para persistir tabelas no BD do Spark --
+   spark.sql("use desp").show()
+
+-- Ler uma tabela em um disco local --
+   apelidotabela = spark.read.load("caminho do arquivo") ex caminho: "/home/jaquesson/download/Atividades/Vendedores.parquet"
+
+-- Transformar DataFrame em Tabela gerenciada --
+   nomedataframe.write.saveAsTable("nomedatabela")
+
+-- Se foram colocados novos dados na tabela, e será preciso incluir novos registros --
+   nomedatabela.write.mode("append").saveAsTable("Despachantes")
+
+-- Recriar a tabela no database --
+   nomedatabela.write.mode("overwrite").saveAsTable("Despachantes")
+
+-- Criar um arquivo (formato desejado) em disco local através de um Dataframe ou tabela --
+   nomedataframe.write.format("parquet").save("/nomecaminhoarquivo/nomearquivo") -> Ex caminho arquivo: "/home/jaquesson/despachantesparquet"
+
+-- Trazer forma de criação da tabela para saber se ela é gerenciável ou não --
+   spark.sql("show create table nometabela").show(truncate=False)
+
+-- Criação de view temporária dentro do spark --
+   nomedatabela.createOrReplaceTempView("nomedaview")
+
+-- Criação de View Global (não temporária) dentro do spark --
+   nomedatabela.createOrReplaceGlobalTempView("nomedaview")
+
+Obs.: Quando a view é Global, para consultar é preciso colocar um prefixo na consulta. Ex: spark.sql("select * from global_temp.Despachantes_view2").show()
+
+-- Outra forma de criar View temporária no Spark utilizando comando SQL --
+   spark.sql("CREATE OR REPLACE TEMP VIEW DESP_VIEW AS select * from despachantes")
+   
+-- Outra forma de criar View global no Spark utilizando comando SQL --
+   spark.sql("CREATE OR REPLACE GLOBAL TEMP VIEW DESP_VIEW2 AS select * from despachantes")
+
+-- Consultas relevantes para filtrar tabelas adicionando condições --
+   nomedatabela.select("nomecoluna1","nomecoluna2").show()
+   nomedatabela.select("nomecoluna1","nomecoluna2").where(Func.col("colunadacondição") > 20).show()
+   nomedatabela.groupby("cidade").agg(sum("vendas")).orderBy(Func.col("sum(vendas)").desc()).show()
+
+-- Como utilizar a junção entre tabelas (Join) no Spark --
+   nomedatabela1.join(nomedatabela2, nomedatabela1.idtabela1 == nometabela2.idtabela2, "inner").select("nomecoluna1","nomecoluna2","nomecolunan").show()
+
+
+_-- Como criar um DW dentro do spark (Exercício aula) --_
+    spark.sql("create database VendedoresVarejo").show()
+
+ -- Mudando para o DW craido --
+    spark.sql("use VendasVarejo").show()
+
+ -- Importar tabelas da maquina local para depois armazená-las no DW do Spark --
+    apelidotabela = spark.read.load("caminho do arquivo")
+
+ -- Armazenando as tabelas no DW --
+    clientes.write.saveAsTable("clientes")
+    vendas.write.saveAsTable("vendas")
+    itensvendas.write.saveAsTable("itensvendas")
+    produtos.write.saveAsTable("produtos")
+    vendedores.write.saveAsTable("vendedores")
