@@ -1,6 +1,0 @@
-Anotações importantes sobre o projeto: Parei no minuto 22:53
-
-Link do vídeo no Youtube: https://www.youtube.com/watch?v=GqAcTrqKcrY&t=227s
-
-Api de busca: RandomApi
-url da Api: randomuser.me
