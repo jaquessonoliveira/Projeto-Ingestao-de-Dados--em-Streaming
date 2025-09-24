@@ -48,4 +48,4 @@
 - PostgreSQL
 - Docker
 
-**Obs:** Os arquivos e códigos utilizados e dezenvolvidos no projeto estão organizados no repositório, assim como o arquivo de configuração "docker-compose".
+**Obs:** Os arquivos e códigos utilizados e desenvolvidos no projeto estão organizados no repositório, assim como o arquivo de configuração "docker-compose".
